@@ -1,12 +1,24 @@
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
+from pymongo import MongoClient
 
 app = Flask(__name__)
 api = Api(app)
 
+client = MongoClient("mongodb://db:27017")
+db = client.anewDB
+UserNum = db["UserNum"]
+
+UserNum.insert({
+    'num_of_users':0
+})
+
 class Visits(Resource):
     def get(self):
-        return "This is the number of visits"
+        prev_count = UserNum.find()[0]['num_of_users']
+        new_count = prev_count + 1
+        UserNum.update({}, {"$set":{"num_of_users":new_count}})
+        return f"Number of visits" + f"{new_count}"
 
 
 def checkPostedData(postedData, functionName):

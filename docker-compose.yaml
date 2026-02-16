@@ -6,5 +6,10 @@ services:
     ports:
       - "5000:5000"
     restart: always
+    depends_on:
+      - db
+  db:
+    build: ./db
+
 
 
