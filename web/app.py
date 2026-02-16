@@ -9,9 +9,7 @@ client = MongoClient("mongodb://db:27017")
 db = client.anewDB
 UserNum = db["UserNum"]
 
-UserNum.insert({
-    'num_of_users':0
-})
+UserNum.insert_one({ 'num_of_users' :0 })
 
 class Visits(Resource):
     def get(self):
